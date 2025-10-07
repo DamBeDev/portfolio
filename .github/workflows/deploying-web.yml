@@ -24,7 +24,13 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           role-session-name: GitHubActionsDeploy
       
+      - name: Check login
+        run: aws sts get-caller-identity
+
       - name: Sync S3 Bucket
         run: |
-          aws s3 sync . s3://${{ secrets.S3_BUCKET_NAME }} --exclude ".git/*" --delete
+          aws s3 sync . s3://${{ secrets.S3_BUCKET_NAME }} --exclude ".github/*" --delete
 
+      - name: Invalidate CloudFront Cache
+        run: |
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"

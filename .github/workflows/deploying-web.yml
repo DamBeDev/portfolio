@@ -34,7 +34,7 @@ jobs:
 
       - name: Sync S3 Bucket
         run: |
-          aws s3 sync . s3://${{ secrets.S3_BUCKET_NAME }} --exclude ".github/*" --delete
+          aws s3 sync . s3://${{ secrets.S3_BUCKET_NAME }} --exclude ".git/*" --delete
 
       # - name: Invalidate CloudFront Cache
       #   run: |

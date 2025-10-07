@@ -2,6 +2,7 @@ name: "Dambedev Portfolio Web Deploy"
 
 on:
   pull_request:
+    types: [closed]
     branches:
       - main
 
@@ -11,8 +12,12 @@ permissions:
 
 jobs:
   deploy:
+    name: Deploy to AWS S3
     runs-on: ubuntu-latest
 
+    environment: ${{ github.base_ref }}
+
+    if: ${{ github.event.pull_request.merged == true }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
